@@ -4,7 +4,7 @@ import styles from "../../styles/page/BillingAmount.module.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import { useEffect } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 import toast, { Toaster } from "react-hot-toast";
 
 function BillingAmount() {
@@ -21,6 +21,7 @@ function BillingAmount() {
   const [receptData, setReceptData] = useState({});
   const [isLoad, setIsLoad] = useState(false);
   const [idNo, setIDno] = useState(false);
+  const receptUser = receptData?.data || receptData;
   useEffect(() => {
     const localData = localStorage.getItem("receptData");
     if (!localData) return navigate("/");
@@ -58,13 +59,14 @@ function BillingAmount() {
       if (isCheck === false)
         return errorToast("Please Enter The Above Credentials");
       if (!amount) return;
+      if (!receptUser?.phno) return errorToast("Not Authenticated");
       setIsLoad(true);
       await axios.post(
         // "http://localhost:3006/api/recept/bill",
         `${api}/api/recept/bill`,
         {
           patphno: patNo,
-          phno: receptData.data.phno,
+          phno: receptUser.phno,
           name: docName,
           amount: amount,
         }

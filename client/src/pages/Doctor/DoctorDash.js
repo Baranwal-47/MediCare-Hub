@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/page/ReceptionistDash.module.css";
 import DocNavBar from "../../components/Doctor/DocNavBar";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 
 function DoctorDash() {
   const api = process.env.REACT_APP_API_URL;
@@ -10,13 +10,14 @@ function DoctorDash() {
     const temp = localStorage.getItem("docData");
     return temp ? JSON.parse(temp) : {};
   });
+  const doctorData = localData?.data?.data || localData?.data || localData;
   const [data, setData] = useState([]);
   const [pat, setPat] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!localData?.data?._id) {
+      if (!doctorData?._id) {
         navigate("/");
         return;
       }
@@ -24,7 +25,7 @@ function DoctorDash() {
       const response = await axios.post(
         `${api}/api/docs/retdoc`,
         {
-          id: localData.data._id,
+          id: doctorData._id,
         }
       );
       setData(response.data.data.patConsult);
@@ -32,7 +33,7 @@ function DoctorDash() {
     };
 
     fetchData();
-  }, [navigate, api]);
+  }, [navigate, api, doctorData?._id]);
   return (
     <>
       <DocNavBar />

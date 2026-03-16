@@ -4,7 +4,7 @@ import styles from "../../styles/page/PatientAdd.module.css";
 import Loader from "../../utils/Loader";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 import toast, { Toaster } from "react-hot-toast";
 
 function PatientAdd() {

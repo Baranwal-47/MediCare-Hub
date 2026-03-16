@@ -12,18 +12,19 @@ const UserInfo = () => {
     if (!localData) return navigate("/");
     setReceptData(JSON.parse(localData));
   }, [navigate]);
+  const userData = receptData?.data || receptData;
   return (
     <>
     <NavBar/>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-            <h1>Hi ! { receptData.data && (receptData.data.name)}</h1>
+          <h1>Hi ! {userData && userData.name}</h1>
             <p className={styles.subHead}>Receptionist</p>
-            <h2>Name:  {receptData.data && receptData.data.name}</h2>
-            <h2>Age: {receptData.data && receptData.data.age }</h2>
-            <h2>Gender: {receptData.data && receptData.data.gender}</h2>
-            <h2>Ph No: {receptData.data && receptData.data.phno}</h2>
-            <h2>Email: {receptData.data && receptData.data.email}</h2>
+          <h2>Name:  {userData && userData.name}</h2>
+          <h2>Age: {userData && userData.age}</h2>
+          <h2>Gender: {userData && userData.gender}</h2>
+          <h2>Ph No: {userData && userData.phno}</h2>
+          <h2>Email: {userData && userData.email}</h2>
         </div>
       </div>
     </>

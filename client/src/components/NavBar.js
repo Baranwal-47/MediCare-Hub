@@ -9,7 +9,8 @@ function NavBar() {
     let localData = localStorage.getItem("receptData");
     if (!localData) return navigate("/");
     localData = JSON.parse(localData);
-    setName(localData.data.name);
+    const receptUser = localData?.data || localData;
+    setName(receptUser?.name || "");
   }, [navigate]);
   return (
     <>

@@ -11,7 +11,7 @@ function UserDocInfo() {
     if (!localData) return navigate("/");
     setReceptData(JSON.parse(localData));
   }, [navigate]);
-  const doctorData = receptData?.data?.data || receptData?.data;
+  const doctorData = receptData?.data?.data || receptData?.data || receptData;
   return (
     <>
       <DocNavBar />

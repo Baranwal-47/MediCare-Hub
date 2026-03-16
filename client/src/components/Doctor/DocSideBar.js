@@ -16,6 +16,7 @@ function DocSideBar({ name }) {
 
   const handleSignOut = () => {
     localStorage.removeItem("docData");
+    localStorage.removeItem("docToken");
     navigate("/");
   };
   const [isOpen, setOpen] = useState(false);

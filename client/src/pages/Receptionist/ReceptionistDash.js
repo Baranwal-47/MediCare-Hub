@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../styles/page/ReceptionistDash.module.css";
 import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 import toast, { Toaster } from "react-hot-toast";
 function ReceptionistDash() {
   const api = process.env.REACT_APP_API_URL;
@@ -12,11 +12,12 @@ function ReceptionistDash() {
     const temp = localStorage.getItem("receptData");
     return temp ? JSON.parse(temp) : {};
   });
+  const receptUser = receptData?.data || receptData;
   const [totPat, setTotpat] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!receptData?.data?._id) {
+        if (!receptUser?._id) {
           navigate("/");
           return;
         }
@@ -24,7 +25,7 @@ function ReceptionistDash() {
         const response = await axios.post(
           // "http://localhost:3006/api/recept/retrecept",
           `${api}/api/recept/retrecept`,
-          { id: receptData.data._id }
+          { id: receptUser._id }
         );
         setData(response.data.data);
         setTotpat(response.data.data.doctor.length);
@@ -35,7 +36,7 @@ function ReceptionistDash() {
     };
 
     fetchData();
-  }, [navigate, api, receptData.data._id]);
+  }, [navigate, api, receptUser?._id]);
   // const success = (value) => toast.success(value);
   const errorToast = (value) => toast.error(value);
 

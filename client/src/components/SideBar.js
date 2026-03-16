@@ -15,6 +15,7 @@ function SideBar({ name }) {
 
   const handleSignOut = () => {
     localStorage.removeItem("receptData");
+    localStorage.removeItem("receptToken");
     navigate("/");
   };
   const [isOpen, setOpen] = useState(false);

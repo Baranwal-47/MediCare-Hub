@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/page/Auth.module.css";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import toast, { Toaster } from "react-hot-toast";
@@ -21,7 +21,7 @@ function Auth() {
     e.preventDefault();
     setLoader(true);
     try {
-      const token = await axios.post(
+      const response = await axios.post(
         // "http://localhost:3006/api/recept/logrecept",
         `${api}/api/recept/logrecept`,
         {
@@ -29,8 +29,8 @@ function Auth() {
           email: email,
         }
       );
-      const tok = JSON.stringify(token.data);
-      localStorage.setItem("receptData", tok);
+      localStorage.setItem("receptData", JSON.stringify(response.data.data));
+      localStorage.setItem("receptToken", response.data.token);
       nav("/recept/dashboard");
       success("Logging In")
       setLoader(false)
@@ -48,7 +48,8 @@ function Auth() {
     };
     try {
       const response = await axios.post(`${api}/api/docs/logdoc/`, data);
-      localStorage.setItem("docData", JSON.stringify(response.data)); // just the data, matches receptionist
+      localStorage.setItem("docData", JSON.stringify(response.data.data));
+      localStorage.setItem("docToken", response.data.token);
       success("Logging In");
       nav("/doc/dash");
       setLoader(false)

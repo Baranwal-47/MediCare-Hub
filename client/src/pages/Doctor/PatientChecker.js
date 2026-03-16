@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/page/PatientChecker.module.css";
 import DocNavBar from "../../components/Doctor/DocNavBar";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 import Loader from "../../utils/Loader";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -75,7 +75,7 @@ function PatientChecker() {
   const added = (value) => toast.success(value);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const doctorData = localData?.data?.data || localData?.data;
+    const doctorData = localData?.data?.data || localData?.data || localData;
     if (!tokenValid) return noUser("Enter Token Number");
     if (!tokenChecked) return noUser("Check The Token Id");
     if (!enteredPres) return noUser("Enter The Prescription Details");

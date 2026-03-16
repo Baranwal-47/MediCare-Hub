@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const { Doc } = require("../models/docModel");
+const jwt = require("jsonwebtoken");
 const joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
@@ -13,8 +14,17 @@ const DoclogController = async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid Password" });
     }
+
+    const token = jwt.sign(
+      { _id: user._id, role: "doctor" },
+      process.env.JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
     const { password, __v, ...safeUser } = user._doc;
-    res.status(200).json({ data: safeUser, message: "Logged Successfully" });
+    res
+      .status(200)
+      .json({ data: safeUser, token: token, message: "Logged Successfully" });
   } catch (err) {
     res.status(500).json({ message: "Login Error" });
   }
