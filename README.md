@@ -1,5 +1,5 @@
-# Clinic-Management
-A Seemless communication with Doctor and Receptionist Using MERN Stack
+# MediCare-Hub: A Clinic-Management System
+A seamless communication with Doctor and Receptionist Using MERN Stack
 
 ## Table of Contents
 
@@ -60,8 +60,8 @@ Start the application:
 ### 1. Receptionist Login:
 
 - Login to the receptionist panel using the credentials:
-  - Email: `receptionist@careclinic.com`
-  - Password: `receptionist@careclinic.com`
+  - Email: `rec@clinic.com`
+  - Password: `Pass@123`
 - Navigate to the patient registration section.
 
 ### 2. Generate Token:
@@ -73,8 +73,8 @@ Start the application:
 ### 3. Doctor Login:
 
 - Access the doctor's panel with the following credentials:
-  - Email: `doctor@careclinic.com`
-  - Password: `doctor@careclinic.com`
+  - Email: `doc@clinic.com`
+  - Password: `Pass@123`
 
 ### 4. Retrieve Patient Information:
 
