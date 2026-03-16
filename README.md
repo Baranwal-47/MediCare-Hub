@@ -1,111 +1,236 @@
-# MediCare-Hub: A Clinic-Management System
-A seamless communication with Doctor and Receptionist Using MERN Stack
+# MediCare-Hub
 
-## Table of Contents
+MediCare-Hub is a role-based MERN stack clinic management web application that streamlines patient intake, token-based consultation flow, diagnosis, and billing between Receptionist and Doctor users.
 
-- [Installation](#installation)
-- [Workflow](#workflow)
-- [Usage](#usage)
-- [Features](#features)
+## Project Overview
 
-# Installation
-1.Clone the repository:
+The system is built around a token queue workflow:
 
-    git clone https://github.com/Baranwal-47/MediCare-Hub
+1. Receptionist registers a patient and generates a doctor-assigned token.
+2. Doctor retrieves patient details by token, reviews historical prescriptions, submits a new prescription, and marks the token as checked.
+3. Receptionist completes billing for the consultation.
 
-2.Navigate to the project folder:
+The application uses JWT-based authentication, MongoDB persistence, and a React SPA frontend.
 
-    cd Clinic-Management
+## Features By Role
 
-3.Navigate to the frontend folder:
+### Receptionist
 
-    cd client
+- Log in and log out securely
+- Register new patients (name, age, phone, gender, address)
+- Generate token numbers for existing patients assigned to specific doctors
+- Submit billing (patient, doctor, consultation amount)
+- View dashboard of billing records including doctor name, patient name, phone, timestamp, and amount
 
-4.Navigate to the backend folder:
+### Doctor
 
-    cd server
+- Log in and log out securely
+- Enter token number to retrieve patient details
+- View complete consultation history and previous prescriptions from all doctors
+- Submit a new prescription for current visit
+- Mark token as checked after consultation
+- View live token queue for today (auto-refresh every 30 seconds)
+- View profile information
+- View dashboard of consulted patients
 
-5.Install dependencies:
+## Tech Stack
 
-    npm install
+### Frontend
 
-6.Set up the MongoDB database:
-    Create a MongoDB Atlas account or set up a local MongoDB instance.
-    Update the MongoDB connection string in the server/db.js file.
+- React (SPA)
+- React Router v6
+- Axios
+- React Hot Toast
+- CSS Modules
+- Nunito font family
 
-Start the application:
-  You need to start the application in both server and client simultaneously
-  By using the following command in both client and server folder
-    npm start
+### Backend
 
-# Workflow
+- Node.js
+- Express.js
 
-### 1. Patient Registration and Token Generation
+### Database
 
-- The patient visits the receptionist and provides necessary details.
-- The receptionist generates a unique token ID for the patient.
+- MongoDB
+- Mongoose ODM
 
-### 2. Doctor Consultation
+### Authentication & Security
 
-- The doctor accesses the patient's token ID to view previous prescriptions and medical history.
-- After consultation, the doctor provides a new prescription.
+- JWT (jsonwebtoken)
+- bcrypt password hashing
 
-### 3. Billing
+### Deployment
 
-- The receptionist performs billing using the patient's token ID.
-- Billing includes details of the prescribed medication and doctor's consultation.
+- Vercel (backend configured through vercel.json for serverless deployment)
 
-# Usage
+## Folder Structure
 
-### 1. Receptionist Login:
+```text
+MediCare-Hub/
+|-- client/
+|   |-- public/
+|   |-- src/
+|   |   |-- pages/
+|   |   |   |-- Auth/
+|   |   |   |-- Doctor/
+|   |   |   |-- Receptionist/
+|   |   |-- components/
+|   |   |   |-- Doctor/
+|   |   |-- styles/
+|   |   |   |-- components/
+|   |   |   |-- page/
+|   |   |   |-- utils/
+|   |   |-- utils/
+|   |   |-- App.js
+|   |   |-- index.js
+|   |-- package.json
+|
+|-- server/
+|   |-- controllers/
+|   |-- middleware/
+|   |-- models/
+|   |-- routes/
+|   |-- db.js
+|   |-- index.js
+|   |-- vercel.json
+|   |-- package.json
+|
+|-- README.md
+```
 
-- Login to the receptionist panel using the credentials:
-  - Email: `rec@clinic.com`
-  - Password: `Pass@123`
-- Navigate to the patient registration section by clicking on Patients not registered section.
+## Setup And Installation
 
-### 2. Generate Token:
+### Prerequisites
 
-- Register new patients by entering their details.
-- Generate a unique token ID for the patient.
-- Provide patients with the generated token ID for future consultations.
+- Node.js v18+
+- npm
+- MongoDB (local instance or MongoDB Atlas)
 
-### 3. Doctor Login:
+### 1. Clone Repository
 
-- Access the doctor's panel with the following credentials:
-  - Email: `doc@clinic.com`
-  - Password: `Pass@123`
+```bash
+git clone <your-repository-url>
+cd MediCare-Hub
+```
 
-### 4. Retrieve Patient Information:
+### 2. Install Dependencies
 
-- Enter the patient's token ID to access their medical history and previous prescriptions.
-- Consult with the patient and provide a new prescription.
+```bash
+# Backend dependencies
+cd server
+npm install
 
-### 5. Prescription Details:
+# Frontend dependencies
+cd ../client
+npm install
+```
 
-- The prescription includes details about prescribed medications, recommended treatments, and any additional notes.
+### 3. Configure Environment Variables
 
-### 6. Receptionist Billing:
+Create .env files in server and client folders as shown in the Environment Variables section below.
 
-- Login to the receptionist panel.
-- Retrieve patient details using the token ID.
-- Review the doctor's prescribed information and patient's medical history.
-- Enter billing details, including the consultation fee and prescribed medications cost.
-- Confirm the billing transaction.
+### 4. Seed Initial Users (No Admin UI)
 
-# Features
+Because there is no admin panel, create at least one doctor and one receptionist via API.
 
-1. **Patient Records**
-   - Maintain comprehensive electronic health records for each patient.
-   - Include information about allergies, previous illnesses, and surgeries.
+Start backend first:
 
-2. **Multi-User Roles**
-   - Differentiate between roles such as receptionist, and doctor.
-   - Assigned specific permissions and access levels based on roles.
+```bash
+cd server
+npm start
+```
 
-3. **Prescription History**
-   - Maintain a detailed history of prescriptions for each patient.
+Then run seed requests (examples):
 
-## Addtional Features
-- The Patient can give the phone to retrieve the details so that if the patient came at night then he can visit next day with same token id
-- If the Token id is lost then the patient can provide the phone number to retrive the all details
+```bash
+# Create doctor account
+curl -X POST http://localhost:3006/api/docs/createdoc \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"Dr. Alex\",\"email\":\"doc@clinic.com\",\"password\":\"Pass@123\",\"age\":35,\"phno\":\"9999999999\",\"gender\":\"Male\",\"exp\":8,\"prevCompany\":\"City Hospital\"}"
+
+# Create receptionist account
+curl -X POST http://localhost:3006/api/recept/createrecept \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"Reception User\",\"age\":\"27\",\"email\":\"rec@clinic.com\",\"password\":\"Pass@123\",\"phno\":8888888888,\"gender\":\"Female\",\"exp\":3,\"prevCompany\":\"Care Desk\"}"
+```
+
+### 5. Run Application Locally
+
+Open two terminals:
+
+```bash
+# Terminal 1 - backend (port 3006)
+cd server
+npm start
+
+# Terminal 2 - frontend (port 3000)
+cd client
+npm start
+```
+
+Frontend: http://localhost:3000
+
+Backend: http://localhost:3006
+
+## Environment Variables
+
+### Server (.env)
+
+| Variable | Required | Description | Example |
+|---|---|---|---|
+| MONGO_URI | Yes | MongoDB connection string | mongodb+srv://... |
+| PORT | Yes | API server port | 3006 |
+| JWT_SECRET | Yes | Secret key for JWT signing/verification | super_secret_key |
+| SALT | Yes | bcrypt salt rounds | 10 |
+
+### Client (.env)
+
+| Variable | Required | Description | Example |
+|---|---|---|---|
+| REACT_APP_API_URL | Yes | Backend base URL | http://localhost:3006 |
+
+## API Reference
+
+### Doctor Routes
+
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | /api/docs/logdoc | Public | Doctor login (returns JWT + user payload) |
+| POST | /api/docs/createdoc | Public | Create doctor account |
+| POST | /api/docs/enqpat | JWT | Submit prescription for a patient |
+| POST | /api/docs/retdoc | JWT | Get doctor consultation dashboard data |
+| POST | /api/docs/retalltoken | JWT | Get today's token queue |
+| POST | /api/docs/rettoken | JWT | Get patient and token details by token id |
+| POST | /api/docs/marktoken | JWT | Mark token as checked |
+
+### Receptionist Routes
+
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | /api/recept/logrecept | Public | Receptionist login (returns JWT + user payload) |
+| POST | /api/recept/createrecept | Public | Create receptionist account |
+| POST | /api/recept/createtoken | JWT | Generate token for patient + doctor |
+| POST | /api/recept/receptregister | JWT | Register new patient |
+| POST | /api/recept/retrecept | JWT | Receptionist dashboard data |
+| POST | /api/recept/retrpat | JWT | Retrieve patient details |
+| POST | /api/recept/bill | JWT | Submit billing record |
+
+## Core Workflow
+
+1. Receptionist registers patient (if new) and generates a token assigned to a doctor.
+2. Doctor enters token number, reviews history, prescribes treatment, and marks token as checked.
+3. Receptionist submits billing for the completed consultation.
+
+## Known Limitations
+
+- No admin panel for user management
+- No image upload for patient profiles or documents
+- No email/SMS notifications
+
+## Future Improvements
+
+- Admin dashboard with role and account management
+- Appointment scheduling and calendar module
+- Automated email/SMS notifications
+- Mobile application for doctor/receptionist workflows
+
