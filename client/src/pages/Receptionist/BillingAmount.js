@@ -69,6 +69,13 @@ function BillingAmount() {
           amount: amount,
         }
       );
+      setDocname("");
+      setPatno("");
+      setAmount("");
+      setPatName("");
+      setPatage("");
+      setPrescription([]);
+      setIDno(false);
       setIsCheck(false);
       setIsLoad(false);
       success("Submitted Successfully");
@@ -141,6 +148,7 @@ function BillingAmount() {
                     type="text"
                     required
                     placeholder="Enter The Name Of The Doctor"
+                    value={docName}
                     onChange={(e) => setDocname(e.target.value)}
                   />
                 </div>
@@ -169,6 +177,7 @@ function BillingAmount() {
                     type="number"
                     required
                     placeholder="If Token ID Entered Then It Is Optional"
+                    value={patNo}
                     onChange={(e) => setPatno(e.target.value)}
                   />
                 </div>
@@ -198,6 +207,7 @@ function BillingAmount() {
                   <input
                     type="number"
                     required
+                    value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>

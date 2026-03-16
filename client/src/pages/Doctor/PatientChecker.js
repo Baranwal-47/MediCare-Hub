@@ -92,6 +92,7 @@ function PatientChecker() {
       );
       setLoader(false);
       setTokenChecked(false);
+      setTokenValid("");
       clearData();
       added("Added Successfully");
     } catch (error) {

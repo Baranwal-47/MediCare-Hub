@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/components/SideBar.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars,faXmark } from "@fortawesome/free-solid-svg-icons";
 function SideBar({ name }) {
   const navigate = useNavigate();
-  const handleSignOut = (e) => {
-    e.preventDefault();
-    localStorage.clear();
+
+  useEffect(() => {
+    const localData = localStorage.getItem("receptData");
+    if (!localData) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("receptData");
     navigate("/");
   };
   const [isOpen, setOpen] = useState(false);

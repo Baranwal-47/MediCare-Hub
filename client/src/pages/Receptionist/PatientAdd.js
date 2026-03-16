@@ -21,6 +21,15 @@ function PatientAdd() {
   const [fetchTokId,setFetchTokid] = useState(false);
   const [isFetched,setFetchedID] = useState(0)
   const [selectedGender, setSelectedGender] = useState("Female");
+
+  const resetNewPatientForm = () => {
+    setNewPatName("");
+    setNewPatAge("");
+    setNewPatPhno("");
+    setNewPatAddr("");
+    setSelectedGender("Female");
+  };
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -36,6 +45,7 @@ function PatientAdd() {
       setFetchedID(fetchData.data.tokenID);
       setFetchTokid(true);
       setLoader(false);
+      navigate('/recept/dashboard');
     } catch (err) {
       setLoader(false);
       errorToast("Failed To Fetch Data")
@@ -55,6 +65,7 @@ function PatientAdd() {
           address:getnewPatAddr
         }
       );
+      resetNewPatientForm();
       success("Patient Added Successfully");
     } catch (error) {
       errorToast("Failed To Add Patient")
@@ -126,6 +137,7 @@ function PatientAdd() {
                       type="text"
                       id="patientName"
                       required
+                      value={getnewPatName}
                       onChange={(e) => setNewPatName(e.target.value)}
                     />
                   </div>
@@ -135,6 +147,7 @@ function PatientAdd() {
                       type="number"
                       id="age"
                       required
+                      value={getnewPatAge}
                       onChange={(e) => setNewPatAge(e.target.value)}
                     />
                   </div>
@@ -144,6 +157,7 @@ function PatientAdd() {
                       type="number"
                       id="phoneNumber"
                       required
+                      value={getnewPatPhno}
                       onChange={(e) => setNewPatPhno(e.target.value)}
                     />
                   </div>
@@ -166,6 +180,7 @@ function PatientAdd() {
                       cols="30"
                       rows="10"
                       placeholder="Optional"
+                      value={getnewPatAddr}
                       onChange={(e) => setNewPatAddr(e.target.value)}
                     ></textarea>
                   </div>
