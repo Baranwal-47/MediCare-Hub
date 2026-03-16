@@ -35,7 +35,7 @@ function ReceptionistDash() {
     };
 
     fetchData();
-  }, [navigate, api]);
+  }, [navigate, api, receptData.data._id]);
   // const success = (value) => toast.success(value);
   const errorToast = (value) => toast.error(value);
 
