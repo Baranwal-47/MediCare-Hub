@@ -99,6 +99,11 @@ function PatientChecker() {
           pres: enteredPres,
         }
       );
+
+      await axios.post(`${api}/api/docs/marktoken`, {
+        tokenId: tokenValid,
+      });
+
       setLoader(false);
       setTokenChecked(false);
       setTokenValid("");

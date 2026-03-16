@@ -10,6 +10,7 @@ function TokenQueue() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [tokens, setTokens] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   const fetchTokens = useCallback(async () => {
     try {
@@ -78,6 +79,10 @@ function TokenQueue() {
     return () => clearInterval(interval);
   }, [fetchTokens]);
 
+  const visibleTokens = showAll
+    ? tokens
+    : tokens.filter((item) => !item.isSeen);
+
   return (
     <>
       <DocNavBar />
@@ -87,19 +92,30 @@ function TokenQueue() {
             <h1>Today's Token Queue</h1>
           </div>
 
+          {!isLoading && tokens.length > 0 && (
+            <div style={{ margin: "12px 0" }}>
+              <button
+                type="button"
+                onClick={() => setShowAll((prev) => !prev)}
+              >
+                {showAll ? "Show Pending Only" : "Show All (Including Seen)"}
+              </button>
+            </div>
+          )}
+
           {isLoading && (
             <div style={{ display: "grid", placeItems: "center", height: "65vh" }}>
               <Loader />
             </div>
           )}
 
-          {!isLoading && tokens.length === 0 && (
+          {!isLoading && visibleTokens.length === 0 && (
             <h2 style={{ textAlign: "center", marginTop: "3rem" }}>
               No tokens for today
             </h2>
           )}
 
-          {!isLoading && tokens.length > 0 && (
+          {!isLoading && visibleTokens.length > 0 && (
             <div className={styles.tableContainer}>
               <table className={styles.table}>
                 <thead>
@@ -113,8 +129,19 @@ function TokenQueue() {
                   </tr>
                 </thead>
                 <tbody className={styles.patient}>
-                  {tokens.map((item) => (
-                    <tr key={item.token} className={styles.patDetails}>
+                  {visibleTokens.map((item) => (
+                    <tr
+                      key={item.token}
+                      className={styles.patDetails}
+                      style={
+                        item.isSeen
+                          ? {
+                              opacity: 0.55,
+                              backgroundColor: "#f2f2f2",
+                            }
+                          : undefined
+                      }
+                    >
                       <td>{item.token}</td>
                       <td>{item.patientName}</td>
                       <td>{item.doctorName}</td>
