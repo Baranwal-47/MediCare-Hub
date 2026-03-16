@@ -7,6 +7,7 @@ import PatientChecker from "./pages/Doctor/PatientChecker";
 import Auth from "./pages/Auth/Auth";
 import UserInfo from "./pages/Receptionist/UserInfo";
 import UserDocInfo from "./pages/Doctor/UserDocInfo";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,31 +17,59 @@ function App() {
     },
     {
       path: "/recept/dashboard",
-      element: <ReceptionistDash />,
+      element: (
+        <ProtectedRoute role="receptionist">
+          <ReceptionistDash />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/recept/pats",
-      element: <PatientAdd />,
+      element: (
+        <ProtectedRoute role="receptionist">
+          <PatientAdd />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/recept/bill",
-      element: <BillingAmount />,
+      element: (
+        <ProtectedRoute role="receptionist">
+          <BillingAmount />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/doc/dash",
-      element: <DoctorDash />,
+      element: (
+        <ProtectedRoute role="doctor">
+          <DoctorDash />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/doc/pats",
-      element: <PatientChecker />,
+      element: (
+        <ProtectedRoute role="doctor">
+          <PatientChecker />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/recept/userinfo",
-      element: <UserInfo />,
+      element: (
+        <ProtectedRoute role="receptionist">
+          <UserInfo />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/doc/docinfo",
-      element: <UserDocInfo />,
+      element: (
+        <ProtectedRoute role="doctor">
+          <UserDocInfo />
+        </ProtectedRoute>
+      ),
     },
   ]);
 

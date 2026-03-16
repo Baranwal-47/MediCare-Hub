@@ -5,11 +5,12 @@ const { docDataReader } = require('../controllers/docDataReader');
 const { enquirePatController } = require('../controllers/enquirePatController');
 const { retrieveSingleToken } = require('../controllers/retrieveSingleToken');
 const { getTokensForToday } = require('../controllers/retrieveToken');
+const { verifyToken } = require('../middleware/verifyToken');
 
 router.post('/logdoc',DoclogController)
-router.post('/enqpat',enquirePatController);
 router.post('/createdoc',createDoc);
-router.post('/retdoc',docDataReader);
-router.post('/retalltoken',getTokensForToday);
-router.post('/rettoken',retrieveSingleToken);
+router.post('/enqpat',verifyToken,enquirePatController);
+router.post('/retdoc',verifyToken,docDataReader);
+router.post('/retalltoken',verifyToken,getTokensForToday);
+router.post('/rettoken',verifyToken,retrieveSingleToken);
 module.exports = router;
