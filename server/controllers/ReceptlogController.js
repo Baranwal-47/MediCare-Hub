@@ -13,7 +13,8 @@ const ReceptlogController = async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid Password" });
     }
-    res.status(200).json({ data: user, message: "Logged Successfully" });
+    const { password, __v, ...safeUser } = user._doc;
+    res.status(200).json({ data: safeUser, message: "Logged Successfully" });
   } catch (err) {
     res.status(500).json({ message: "Login Error" });
   }
