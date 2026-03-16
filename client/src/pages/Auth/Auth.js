@@ -47,16 +47,10 @@ function Auth() {
       password: pass,
     };
     try {
-      let tok = await axios.post(
-        // "http://localhost:3006/api/docs/logdoc/",
-        `${api}/api/docs/logdoc/`,
-        data
-      );
-      tok = JSON.stringify(tok);
-      localStorage.setItem("docData", tok);
+      const response = await axios.post(`${api}/api/docs/logdoc/`, data);
+      localStorage.setItem("docData", JSON.stringify(response.data)); // just the data, matches receptionist
       success("Logging In");
       nav("/doc/dash");
-      success("Logging In")
       setLoader(false)
     } catch (err) {
       setLoader(false)
