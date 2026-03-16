@@ -1,0 +1,16 @@
+# root
+package-lock.json
+
+# env files
+.env
+.env.local
+
+# dependencies
+node_modules/
+
+# build
+build/
+dist/
+
+# logs
+*.log
