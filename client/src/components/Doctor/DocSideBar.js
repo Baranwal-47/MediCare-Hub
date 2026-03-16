@@ -68,6 +68,20 @@ function DocSideBar({ name }) {
               </NavLink>
 
               <NavLink
+                to="/doc/queue"
+                className={({ isActive }) =>
+                  isActive ? styles.active : undefined
+                }
+              >
+                <li>
+                  <span className={styles.icon}>
+                    <span name="list-outline"></span>
+                  </span>
+                  <h3 className={styles.title}>Token Queue</h3>
+                </li>
+              </NavLink>
+
+              <NavLink
                 to="/doc/docinfo"
                 className={({ isActive }) =>
                   isActive ? styles.active : undefined
@@ -131,6 +145,20 @@ function DocSideBar({ name }) {
                     <span name="people-outline"></span>
                   </span>
                   <h3 className={styles.title}>Patient Checker</h3>
+                </li>
+              </NavLink>
+
+              <NavLink
+                to="/doc/queue"
+                className={({ isActive }) =>
+                  isActive ? styles.active : undefined
+                }
+              >
+                <li>
+                  <span className={styles.icon}>
+                    <span name="list-outline"></span>
+                  </span>
+                  <h3 className={styles.title}>Token Queue</h3>
                 </li>
               </NavLink>
 

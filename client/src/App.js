@@ -8,6 +8,7 @@ import Auth from "./pages/Auth/Auth";
 import UserInfo from "./pages/Receptionist/UserInfo";
 import UserDocInfo from "./pages/Doctor/UserDocInfo";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TokenQueue from "./pages/Doctor/TokenQueue";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,6 +53,22 @@ function App() {
       element: (
         <ProtectedRoute role="doctor">
           <PatientChecker />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/doc/patientchecker",
+      element: (
+        <ProtectedRoute role="doctor">
+          <PatientChecker />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/doc/queue",
+      element: (
+        <ProtectedRoute role="doctor">
+          <TokenQueue />
         </ProtectedRoute>
       ),
     },

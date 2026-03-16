@@ -63,17 +63,18 @@ const retrieveSingleToken = async (req, res) => {
 };
 
 async function buildCombinedData(patientDetails) {
-  const prescriptions = patientDetails.docConsult.map((e) => e.prescription);
   let doctorNames = [];
   const populated = await Pats.findById(patientDetails._id)
     .populate("docConsult.doctor")
     .exec();
-  if (populated) {
-    doctorNames = populated.docConsult.map((c) => c.doctor?.name || "Unknown");
-  }
-  return prescriptions.map((prescription, i) => ({
-    prescription,
+  const consults = populated ? populated.docConsult : patientDetails.docConsult;
+  doctorNames = consults.map((c) => c.doctor?.name || "Unknown");
+
+  return consults.map((consult, i) => ({
+    prescription: consult.prescription,
     doctorName: doctorNames[i],
+    doctorId: consult.doctor?._id ? consult.doctor._id.toString() : consult.doctor?.toString(),
+    createdAt: consult.createdAt,
   }));
 }
 

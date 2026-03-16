@@ -31,6 +31,7 @@ const createToken = async (req, res) => {
             token: newTokenValue,
             docs: new mongoose.Types.ObjectId(docData._id),
             patient: new mongoose.Types.ObjectId(patData._id),
+            checked: false,
           },
         },
       },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/page/PatientChecker.module.css";
 import DocNavBar from "../../components/Doctor/DocNavBar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../utils/axiosInstance";
 import Loader from "../../utils/Loader";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 function PatientChecker() {
   const api = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const location = useLocation();
   const init = {};
   const [localData, setLocalData] = useState(init);
   const [isLoad, setLoader] = useState(false);
@@ -38,6 +39,13 @@ function PatientChecker() {
   const prescriptionsFromServer = [];
   const [prescription, setPrescription] = useState(prescriptionsFromServer);
   const [enteredPres, setEnteredPres] = useState("");
+
+  useEffect(() => {
+    if (location.state?.token) {
+      setTokenValid(String(location.state.token));
+    }
+  }, [location.state]);
+
   function clearData() {
     setDocname("");
     setName("");
@@ -87,6 +95,7 @@ function PatientChecker() {
         {
           patid: patId,
           id: doctorData._id,
+          token: Number(tokenValid),
           pres: enteredPres,
         }
       );

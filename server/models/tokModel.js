@@ -6,7 +6,7 @@ const tokSchema = new mongoose.Schema({
             token: { type: Number, unique: true },
             docs: { type: mongoose.Schema.Types.ObjectId, ref: 'Doc', required: true },
             patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Pats', required: true },
-            checked: { type: Boolean },
+            checked: { type: Boolean, default: false },
             createdAt: { type: Date, default: Date.now }
         }
     ],

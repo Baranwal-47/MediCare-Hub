@@ -44,8 +44,10 @@ function PatientAdd() {
       );
       setFetchedID(fetchData.data.tokenID);
       setFetchTokid(true);
+      success(`Token Generated: ${fetchData.data.tokenID}`);
+      setDocname("");
+      setNumber("");
       setLoader(false);
-      navigate('/recept/dashboard');
     } catch (err) {
       setLoader(false);
       errorToast("Failed To Fetch Data")
@@ -91,6 +93,7 @@ function PatientAdd() {
               <label>Enter The Patients Phone Number</label>
               <input
                 type="number"
+                value={getNumber}
                 onChange={(e) => setNumber(e.target.value)}
                 className={styles.search}
                 required
@@ -98,6 +101,7 @@ function PatientAdd() {
               <label>Enter The Doctor's Name</label>
               <input
                 type="text"
+                value={getDocname}
                 onChange={(e) => setDocname(e.target.value)}
                 className={styles.search}
                 required

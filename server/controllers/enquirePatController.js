@@ -3,6 +3,7 @@
 
 const { Doc } = require('../models/docModel');
 const { Pats } = require('../models/patModel');
+const { Token } = require('../models/tokModel');
 const mongoose = require('mongoose');
 
 const enquirePatController = async (req, res) => {
@@ -36,6 +37,15 @@ const enquirePatController = async (req, res) => {
         doc.patConsult.push(newPatient._id);
     }
         await doc.save();
+
+        const tokenNumber = parseInt(req.body.token, 10);
+        if (!Number.isNaN(tokenNumber)) {
+            await Token.findOneAndUpdate(
+                { "tokens.token": tokenNumber },
+                { $set: { "tokens.$.checked": true } }
+            );
+        }
+
         res.status(200).json({ message: 'Patient details added successfully' });
     } catch (err) {
         console.error(err);
