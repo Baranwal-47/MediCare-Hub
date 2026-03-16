@@ -120,9 +120,8 @@ function PatientChecker() {
                   <input
                     type="text"
                     id="patientName"
-                    required
-                    placeholder="Enter Token ID"
-                    disabled
+                    placeholder="This will automatically be filled based on the token number"
+                    readOnly
                     value={docName}
                   />
                 </div>
@@ -131,9 +130,8 @@ function PatientChecker() {
                   <input
                     type="text"
                     id="patientName"
-                    required
-                    disabled
-                    placeholder="Enter Token ID"
+                    readOnly
+                    placeholder="This will automatically be filled based on the token number"
                     value={name}
                   />
                 </div>
@@ -142,10 +140,9 @@ function PatientChecker() {
                   <input
                     type="number"
                     id="age"
-                    required
-                    disabled
+                    readOnly
                     value={age}
-                    placeholder="Enter Token ID"
+                    placeholder="This will automatically be filled based on the token number"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -153,9 +150,8 @@ function PatientChecker() {
                   <input
                     type="number"
                     id="phoneNumber"
-                    required
-                    disabled
-                    placeholder="Enter Token ID"
+                    readOnly
+                    placeholder="This will automatically be filled based on the token number"
                     value={phno}
                   />
                 </div>
@@ -171,7 +167,7 @@ function PatientChecker() {
                   />
                   <div style={{ display: "grid", placeContent: "center" }}>
                     <button
-                      type="submit"
+                      type="button"
                       className={styles.btn}
                       onClick={checkToken}
                     >
@@ -196,12 +192,13 @@ function PatientChecker() {
                     cols="30"
                     rows="10"
                     required
+                    value={enteredPres}
                     onChange={(e) => setEnteredPres(e.target.value)}
                   ></textarea>
                 </div>
                 <div style={{ display: "grid", placeContent: "center" }}>
                   <button
-                    type="submit"
+                    type="button"
                     className={styles.btn}
                     onClick={handleSubmit}
                   >
