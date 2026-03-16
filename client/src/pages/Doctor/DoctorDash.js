@@ -6,51 +6,33 @@ import axios from "axios";
 
 function DoctorDash() {
   const api = process.env.REACT_APP_API_URL;
-  const initialData = {
-    _id: "",
-    name: "",
-    email: "",
-    password: "",
-    age: 8,
-    phno: "",
-    gender: "",
-    patConsult: [],
-    __v: 0,
-  };
-  const [localData, setLocalData] = useState({ data: { data: initialData } });
+  const [localData] = useState(() => {
+    const temp = localStorage.getItem("docData");
+    return temp ? JSON.parse(temp) : {};
+  });
   const [data, setData] = useState([]);
-  const [pat, setPat] = useState("");
+  const [pat, setPat] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const temp = await localStorage.getItem("docData");
-      const parsedData = temp ? JSON.parse(temp) : {};
-      setLocalData((prevLocalData) => {
-        if (JSON.stringify(prevLocalData) !== JSON.stringify(parsedData)) {
-          return parsedData;
-        }
-        return prevLocalData;
-      });
-      if (!temp) {
+      if (!localData?.data?._id) {
         navigate("/");
         return;
       }
-      if (localData.data.data._id) {
-        const fetchID = localData.data.data._id;
-        const response = await axios.post(
-          `${api}/api/docs/retdoc`,
-          {
-            id: fetchID,
-          }
-        );
-        setData(response.data.data.patConsult);
-        setPat(response.data.data.patConsult.length);
-      }
+
+      const response = await axios.post(
+        `${api}/api/docs/retdoc`,
+        {
+          id: localData.data._id,
+        }
+      );
+      setData(response.data.data.patConsult);
+      setPat(response.data.data.patConsult.length);
     };
 
     fetchData();
-  }, [navigate, localData,api]);
+  }, [navigate, api]);
   return (
     <>
       <DocNavBar />

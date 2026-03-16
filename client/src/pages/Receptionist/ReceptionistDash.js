@@ -8,44 +8,26 @@ function ReceptionistDash() {
   const api = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [data, setData] = useState({});
-  const [receptData, setReceptData] = useState({});
+  const [receptData] = useState(() => {
+    const temp = localStorage.getItem("receptData");
+    return temp ? JSON.parse(temp) : {};
+  });
   const [totPat, setTotpat] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const localData = await localStorage.getItem("receptData");
-        if (!localData) {
+        if (!receptData?.data?._id) {
           navigate("/");
           return;
         }
 
-        const parsedLocalData = JSON.parse(localData);
-
-        setReceptData((prevReceptData) => {
-          if (
-            JSON.stringify(prevReceptData) !== JSON.stringify(parsedLocalData)
-          ) {
-            return parsedLocalData;
-          }
-          return prevReceptData;
-        });
-
-        if (parsedLocalData.data) {
-          const response = await axios.post(
-            // "http://localhost:3006/api/recept/retrecept",
-            `${api}/api/recept/retrecept`,
-            { id: parsedLocalData.data._id }
-          );
-          setData((prevData) => {
-            if (
-              JSON.stringify(prevData) !== JSON.stringify(response.data.data)
-            ) {
-              return response.data.data;
-            }
-            return prevData;
-          });
-          setTotpat(response.data.data.doctor.length);
-        }
+        const response = await axios.post(
+          // "http://localhost:3006/api/recept/retrecept",
+          `${api}/api/recept/retrecept`,
+          { id: receptData.data._id }
+        );
+        setData(response.data.data);
+        setTotpat(response.data.data.doctor.length);
 
       } catch (error) {
         errorToast("Error while getting data")
@@ -53,7 +35,7 @@ function ReceptionistDash() {
     };
 
     fetchData();
-  }, [navigate, receptData, data,api]);
+  }, [navigate, api]);
   // const success = (value) => toast.success(value);
   const errorToast = (value) => toast.error(value);
 
