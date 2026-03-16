@@ -62,7 +62,7 @@ Start the application:
 - Login to the receptionist panel using the credentials:
   - Email: `rec@clinic.com`
   - Password: `Pass@123`
-- Navigate to the patient registration section.
+- Navigate to the patient registration section by clicking on Patients not registered section.
 
 ### 2. Generate Token:
 

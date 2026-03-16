@@ -16,11 +16,12 @@ function PatientChecker() {
     const fetchData = async () => {
       try {
         const tempData = localStorage.getItem("docData");
-        setLocalData(JSON.parse(tempData));
         if (!tempData) {
           navigate("/");
           return;
         }
+
+        setLocalData(JSON.parse(tempData));
       } catch (err) {
         noUser("Not Authenticated")
       }
@@ -74,16 +75,18 @@ function PatientChecker() {
   const added = (value) => toast.success(value);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const doctorData = localData?.data?.data || localData?.data;
     if (!tokenValid) return noUser("Enter Token Number");
     if (!tokenChecked) return noUser("Check The Token Id");
     if (!enteredPres) return noUser("Enter The Prescription Details");
+    if (!doctorData?._id) return noUser("Not Authenticated");
     setLoader(true);
     try {
       await axios.post(
         `${api}/api/docs/enqpat`,
         {
           patid: patId,
-          id: localData.data.data._id,
+          id: doctorData._id,
           pres: enteredPres,
         }
       );

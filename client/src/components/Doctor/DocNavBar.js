@@ -9,7 +9,12 @@ function DocNavBar() {
     let localData = localStorage.getItem("docData");
     if (!localData) return navigate("/");
     localData = JSON.parse(localData);
-    setName(localData.data.data.name);
+    const doctorData = localData?.data?.data || localData?.data;
+    if (!doctorData?.name) {
+      navigate("/");
+      return;
+    }
+    setName(doctorData.name);
   }, [navigate]);
   return (
     <>
